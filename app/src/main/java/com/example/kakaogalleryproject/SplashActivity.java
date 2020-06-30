@@ -13,13 +13,12 @@ public class SplashActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
         handler.postDelayed(new Runnable(){
             @Override
             public void run(){
                 showMain();
             }
-        }, 100);
+        }, 1000);
     }
     public void showMain(){
         Intent intent = new Intent(getBaseContext(), MainActivity2.class);

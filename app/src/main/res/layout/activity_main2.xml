@@ -16,12 +16,25 @@
         android:textSize="20sp"
         android:textColor="@android:color/black" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:backgroundTint="#888888"
-        android:id="@+id/recycler_view"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingHorizontal="1dp"/>
+        android:layout_height="match_parent">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:backgroundTint="#888888"
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="1dp"/>
 
+        <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:id="@+id/progress_bar"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateDrawable="@drawable/circle_progress"
+            android:indeterminateDuration="1000"/>
+    </FrameLayout>
 </LinearLayout>
