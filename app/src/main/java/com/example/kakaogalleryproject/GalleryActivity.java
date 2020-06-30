@@ -1,8 +1,6 @@
 package com.example.kakaogalleryproject;
 
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -115,7 +113,6 @@ public class GalleryActivity extends AppCompatActivity {
     @Override
     public void finish(){
         super.finish();
-        overridePendingTransition(R.anim.fadein, R.anim.anim_slide_out_up);
     }
     public void gallery_exit(View v){
         finish();
