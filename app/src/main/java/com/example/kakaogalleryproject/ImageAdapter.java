@@ -42,7 +42,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.CustomViewHo
 
     @Override
     public void onBindViewHolder(final @NonNull ImageAdapter.CustomViewHolder viewholder, final int position) {
-        Glide.with(mContext).load(imageList.get(position)).into(viewholder.imageView); // thumbnail(0.5f) 뺐음, centerCrop().도 뺐음
+        Glide.with(mContext).load(imageList.get(position)).centerCrop().into(viewholder.imageView); // thumbnail(0.5f) 뺐음, centerCrop().도 뺐음
     }
 
     @Override

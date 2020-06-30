@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation = "vertical"
+    android:background="@color/colorPrimary"
     tools:context=".MainActivity2">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity = "center"
+        android:text="Sasha"
+        android:fontFamily="serif-monospace"
+        android:textSize="20sp"
+        android:textColor="@android:color/black" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:backgroundTint="#888888"
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingHorizontal="3dp"/>
+        android:paddingHorizontal="1dp"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity = "center"
-        android:padding="10dp"
-        android:text="corona widget"
-        android:textSize="20sp"
-        android:background="#ffbb77"
-        android:textColor="#ffffff" />
 
-</FrameLayout>
+</LinearLayout>
