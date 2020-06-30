@@ -1,6 +1,5 @@
 package com.example.kakaogalleryproject;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -12,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import io.reactivex.Observable;
@@ -24,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
     protected ArrayList<String> imageList = new ArrayList<>();
     private RecyclerView.Adapter mAdapter;
     private ProgressBar mProgress;
+    private Disposable downloadTask;
+    private String BASE_URL = "https://www.gettyimagesgallery.com/collection/sasha";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,15 +44,15 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
         DownloadTask();
     }
-    Disposable downloadtask;
+
     void DownloadTask() {
         // onPreExecute
         mProgress.setVisibility(View.VISIBLE);
 
-        downloadtask = Observable.fromCallable(() -> {
+        downloadTask = Observable.fromCallable(() -> {
 
             // onBackground
-            Document doc = Jsoup.connect("https://www.gettyimagesgallery.com/collection/sasha").timeout(3000).get();
+            Document doc = Jsoup.connect(BASE_URL).timeout(3000).get();
             String imageSelector = ".jq-lazy";
             Elements images = doc.select(imageSelector); // get images
             for (int i=0;i<images.size();i++) imageList.add(images.get(i).attributes().get("data-src"));
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                     mAdapter.notifyDataSetChanged(); // dataset changed
                     mProgress.setVisibility(View.GONE);
 
-                    downloadtask.dispose();
+                    downloadTask.dispose();
                 });
     }
 }
