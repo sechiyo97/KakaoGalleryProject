@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         downloadTask = Observable.fromCallable(() -> {
 
             // onBackground
-            Document doc = Jsoup.connect(BASE_URL).timeout(3000).get();
+            Document doc = Jsoup.connect(BASE_URL).timeout(10000).get();
             String imageSelector = ".jq-lazy";
             Elements images = doc.select(imageSelector); // get images
             for (int i=0;i<images.size();i++) imageList.add(images.get(i).attributes().get("data-src"));
