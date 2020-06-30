@@ -21,7 +21,7 @@ public class SplashActivity extends Activity {
         }, 1000);
     }
     public void showMain(){
-        Intent intent = new Intent(getBaseContext(), MainActivity2.class);
+        Intent intent = new Intent(getBaseContext(), MainActivity.class);
         startActivity(intent);
         overridePendingTransition(0, 0);
         finish();

@@ -1,88 +1,109 @@
 package com.example.kakaogalleryproject;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 
-import com.bumptech.glide.Glide;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
-    public static final String sampleURL = "https://cdn-lostark.game.onstove.com/uploadfiles/tooltip/82fba916b31d449dbae5abe9c7f7fc86.png";
-    private ProgressDialog progressDialog;
-
-    private ImageView reloadButton;
-    private String[] mariImageURL = new String[6];
-    private ImageView[] mariImage = new ImageView[6];
-    private TextView[] mariName = new TextView[6];
-    private TextView[] mariPrice = new TextView[6];
-
-    public Handler mHandler;
-    public Message message;
-    private int SHOW_IMAGE = 1111;
+    protected ArrayList<String> imageList = new ArrayList<String>();
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
+  //  private Handler mHandler; // code piece which was first written for direct threading
+   // private Message message;// code piece which was first written for direct threading
+    private ProgressBar mProgress;
+    private DownloadTask downloadTask;
+    //private int START_LOADING = 1111;// code piece which was first written for direct threading
+   // private int END_LOADING = 2222;// code piece which was first written for direct threading
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mHandler = new Handler(){
+        // code piece which was first written for direct threading
+       /* mHandler = new Handler(){
             @Override
             public void handleMessage(Message msg){
-                if (msg.arg1 == SHOW_IMAGE) showImage(msg.arg2);
+                if (msg.arg1 == START_LOADING) startLoading();
+                if (msg.arg1 == END_LOADING) endLoading();
             }
-        };
+        }; */
 
-        mariImage[0] = (ImageView) findViewById(R.id.mari_image_0);
-        mariImage[1] = (ImageView) findViewById(R.id.mari_image_1);
-        mariImage[2] = (ImageView) findViewById(R.id.mari_image_2);
-        mariImage[3] = (ImageView) findViewById(R.id.mari_image_3);
-        mariImage[4] = (ImageView) findViewById(R.id.mari_image_4);
-        mariImage[5] = (ImageView) findViewById(R.id.mari_image_5);
+        mProgress = findViewById(R.id.progress_bar);
 
-        mariName[0] = (TextView) findViewById(R.id.mari_name_0);
-        mariName[1] = (TextView) findViewById(R.id.mari_name_1);
-        mariName[2] = (TextView) findViewById(R.id.mari_name_2);
-        mariName[3] = (TextView) findViewById(R.id.mari_name_3);
-        mariName[4] = (TextView) findViewById(R.id.mari_name_4);
-        mariName[5] = (TextView) findViewById(R.id.mari_name_5);
+        recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
 
-        mariPrice[0] = (TextView) findViewById(R.id.mari_price_0);
-        mariPrice[1] = (TextView) findViewById(R.id.mari_price_1);
-        mariPrice[2] = (TextView) findViewById(R.id.mari_price_2);
-        mariPrice[3] = (TextView) findViewById(R.id.mari_price_3);
-        mariPrice[4] = (TextView) findViewById(R.id.mari_price_4);
-        mariPrice[5] = (TextView) findViewById(R.id.mari_price_5);
+        // use a staggerd grid layout manager
+        layoutManager = new GridLayoutManager(this, 3);
+        recyclerView.setLayoutManager(layoutManager);
 
-        reloadButton = (ImageView) findViewById(R.id.reload_button);
-        reloadButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                loadImages();
+        // adapter
+        mAdapter = new ImageAdapter(imageList);
+        recyclerView.setAdapter(mAdapter);
+
+        downloadTask = new DownloadTask();
+        downloadTask.execute();
+
+        //loadImages(); // code piece which was first written for direct threading
+    }
+    // code piece which was first written for direct threading
+    /*
+    public void startLoading(){
+        mProgress.setVisibility(View.VISIBLE);
+    }
+    public void endLoading(){
+        mAdapter.notifyDataSetChanged(); // dataset changed
+        mProgress.setVisibility(View.GONE);
+    }*/
+    private class DownloadTask extends AsyncTask<Object, String, ArrayList<String>> {
+        @Override
+        protected void onPreExecute(){
+            mProgress.setVisibility(View.VISIBLE);
+        }
+        @Override
+        protected ArrayList<String> doInBackground(Object... params){
+            String url = "https://www.gettyimagesgallery.com/collection/sasha";
+            String imageSelector = ".jq-lazy";
+            Document doc = null;
+            try {
+                doc = Jsoup.connect(url).get(); // get doc
+                Elements images = doc.select(imageSelector); // get images
+                for (int i=0;i<images.size();i++) imageList.add(images.get(i).attributes().get("data-src"));
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
             }
-        });
-        loadImages();
-    }
-    public void showImage(int i){
-        Glide.with(getApplicationContext()).load(mariImageURL[i]).into(mariImage[i]);
+            return imageList;
+        }
+        @Override
+        protected void onPostExecute(ArrayList<String> imageList){
+            mAdapter.notifyDataSetChanged(); // dataset changed
+            mProgress.setVisibility(View.GONE);
+        }
     }
 
-    // 웹에서 마리 정보 가져와 띄우기
+    // below code uses direct threading & messaging to get images
+    /*
     public void loadImages(){
-
-        Thread parseThread = new Thread(){
+        // get images from site
+        parseThread = new Thread(){
             public void run(){
+                message = mHandler.obtainMessage();
+                message.arg1 = START_LOADING;
+                mHandler.sendMessage(message);
+
                 String url = "https://www.gettyimagesgallery.com/collection/sasha";
                 String imageSelector = ".jq-lazy";
                 Document doc = null;
@@ -92,19 +113,23 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println(e.getMessage());
                 }
                 Elements images = doc.select(imageSelector); // get images
+                for (int i=0;i<images.size();i++)  imageList.add(images.get(i).attributes().get("data-src"));
 
-                for(int i=0;i<6;i++){//images.size();i++) {
-                    mariImageURL[i] = images.get(i).attributes().get("data-src");
-                    // 이미지 로딩
-                    message = mHandler.obtainMessage();
-                    message.arg1 = SHOW_IMAGE;
-                    message.arg2 = i;
-                    mHandler.sendMessage(message);
-                }
+                message = mHandler.obtainMessage();
+                message.arg1 = END_LOADING;
+                mHandler.sendMessage(message);
             }
         };
         parseThread.start();
-        try{parseThread.join(); } catch(InterruptedException e){}
+
+       // try{parseThread.join(); } catch(InterruptedException e){}
+
+    }*/
+
+    @Override
+    public void onDestroy( ) {
+        if (downloadTask.getStatus() == AsyncTask.Status.RUNNING) downloadTask.cancel(true);
+        super.onDestroy();
 
     }
 }
