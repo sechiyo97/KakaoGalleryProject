@@ -22,22 +22,20 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.CustomViewHo
 
         CustomViewHolder(View view) {
             super(view);
-            this.imageView = (ImageView) view.findViewById(R.id.recyclerview_image);
+            this.imageView = view.findViewById(R.id.recyclerview_image);
             mContext = view.getContext();
         }
     }
 
-    public ImageAdapter(ArrayList<String> imageList) {
+    ImageAdapter(ArrayList<String> imageList) {
         this.imageList = imageList;
     }
 
     @Override
-    public CustomViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public @NonNull CustomViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.single_image, viewGroup, false);
-
-        CustomViewHolder viewHolder = new CustomViewHolder(view);
-        return viewHolder;
+        return new CustomViewHolder(view);
     }
 
     @Override

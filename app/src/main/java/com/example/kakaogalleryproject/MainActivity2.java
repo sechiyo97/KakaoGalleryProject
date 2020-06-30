@@ -25,29 +25,17 @@ public class MainActivity2 extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private Handler mHandler;
-    private Message message;
+  //  private Handler mHandler; // code piece which was first written for direct threading
+   // private Message message;// code piece which was first written for direct threading
     private ProgressBar mProgress;
     private DownloadTask downloadTask;
-    private int START_LOADING = 1111;
-    private int END_LOADING = 2222;
-
-    private Long start_t;
-    private Long prev_t, cur_t;
-    public void timeFactorTest(int lineNum){
-        cur_t = System.currentTimeMillis();
-        Log.e("TIME FACTOR TESTING", "line " +lineNum + ": " + (cur_t-prev_t));
-        prev_t = cur_t;
-    }
+    //private int START_LOADING = 1111;// code piece which was first written for direct threading
+   // private int END_LOADING = 2222;// code piece which was first written for direct threading
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-
-        /** init for reconstruct part **/
-        start_t = System.currentTimeMillis();
-        prev_t = start_t;
 
         // code piece which was first written for direct threading
        /* mHandler = new Handler(){
@@ -58,9 +46,9 @@ public class MainActivity2 extends AppCompatActivity {
             }
         }; */
 
-        mProgress = (ProgressBar) findViewById(R.id.progress_bar);
+        mProgress = findViewById(R.id.progress_bar);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
 
         // use a staggerd grid layout manager
@@ -76,13 +64,15 @@ public class MainActivity2 extends AppCompatActivity {
 
         //loadImages(); // code piece which was first written for direct threading
     }
+    // code piece which was first written for direct threading
+    /*
     public void startLoading(){
         mProgress.setVisibility(View.VISIBLE);
     }
     public void endLoading(){
         mAdapter.notifyDataSetChanged(); // dataset changed
         mProgress.setVisibility(View.GONE);
-    }
+    }*/
     private class DownloadTask extends AsyncTask<Object, String, ArrayList<String>> {
         @Override
         protected void onPreExecute(){
@@ -95,11 +85,11 @@ public class MainActivity2 extends AppCompatActivity {
             Document doc = null;
             try {
                 doc = Jsoup.connect(url).get(); // get doc
+                Elements images = doc.select(imageSelector); // get images
+                for (int i=0;i<images.size();i++) imageList.add(images.get(i).attributes().get("data-src"));
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
-            Elements images = doc.select(imageSelector); // get images
-            for (int i=0;i<images.size();i++) imageList.add(images.get(i).attributes().get("data-src"));
             return imageList;
         }
         @Override
