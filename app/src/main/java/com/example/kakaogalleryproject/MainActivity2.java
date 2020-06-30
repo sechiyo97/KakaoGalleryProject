@@ -28,7 +28,7 @@ public class MainActivity2 extends AppCompatActivity {
     private Handler mHandler;
     private Message message;
     private ProgressBar mProgress;
-    private Thread parseThread;
+    private DownloadTask downloadTask;
     private int START_LOADING = 1111;
     private int END_LOADING = 2222;
 
@@ -71,7 +71,8 @@ public class MainActivity2 extends AppCompatActivity {
         mAdapter = new ImageAdapter(imageList);
         recyclerView.setAdapter(mAdapter);
 
-        new DownloadTask().execute("https://www.gettyimagesgallery.com/collection/sasha");
+        downloadTask = new DownloadTask();
+        downloadTask.execute();
 
         //loadImages(); // code piece which was first written for direct threading
     }
@@ -82,14 +83,14 @@ public class MainActivity2 extends AppCompatActivity {
         mAdapter.notifyDataSetChanged(); // dataset changed
         mProgress.setVisibility(View.GONE);
     }
-    private class DownloadTask extends AsyncTask<String, String, ArrayList<String>> {
+    private class DownloadTask extends AsyncTask<Object, String, ArrayList<String>> {
         @Override
         protected void onPreExecute(){
             mProgress.setVisibility(View.VISIBLE);
         }
         @Override
-        protected ArrayList<String> doInBackground(String... params){
-            String url = params[0];
+        protected ArrayList<String> doInBackground(Object... params){
+            String url = "https://www.gettyimagesgallery.com/collection/sasha";
             String imageSelector = ".jq-lazy";
             Document doc = null;
             try {
@@ -142,6 +143,8 @@ public class MainActivity2 extends AppCompatActivity {
 
     @Override
     public void onDestroy( ) {
-        super.onDestroy( );
+        if (downloadTask.getStatus() == AsyncTask.Status.RUNNING) downloadTask.cancel(true);
+        super.onDestroy();
+
     }
 }
