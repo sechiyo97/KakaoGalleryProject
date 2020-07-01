@@ -1,11 +1,14 @@
 package com.example.kakaogalleryproject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -29,35 +32,50 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
 public class MainActivity extends AppCompatActivity {
-    protected ArrayList<ImgInfo> imageList = new ArrayList<>();
-    private RecyclerView.Adapter mAdapter;
     private ProgressBar mProgress;
     private Disposable downloadTask;
 
     private LinearLayout sortIndexBtn;
     private LinearLayout sortAtoZBtn;
     private LinearLayout sortDateBtn;
+    private ImageView showListBtn;
+    private ImageView showGridBtn;
+
+    protected ArrayList<ImgInfo> imageList = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager llManager;
+    private RecyclerView.LayoutManager glManager;
 
     private String BASE_URL = "https://www.gettyimagesgallery.com/collection/sasha";
 
+    public void showSplash(){
+        Intent intent = new Intent(this, SplashActivity.class);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        showSplash();
+
         setContentView(R.layout.activity_main);
 
         sortIndexBtn = findViewById(R.id.sort_index_btn);
         sortAtoZBtn = findViewById(R.id.sort_atoz_btn);
         sortDateBtn = findViewById(R.id.sort_date_btn);
+        showListBtn = findViewById(R.id.show_list_btn);
+        showGridBtn = findViewById(R.id.show_grid_btn);
 
         mProgress = findViewById(R.id.progress_bar);
 
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
 
         // use a staggerd grid layout manager
-        RecyclerView.LayoutManager glManager = new GridLayoutManager(this, 3);
-        //RecyclerView.LayoutManager llManager = new LinearLayoutManager();
-        recyclerView.setLayoutManager(glManager);
+        glManager = new GridLayoutManager(this, 3);
+        llManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(llManager);
 
         // adapter
         mAdapter = new ImageAdapter(imageList);
@@ -115,6 +133,16 @@ public class MainActivity extends AppCompatActivity {
                         sortIndexBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                         sortAtoZBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                         sortDateBtn.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                    });
+                    showListBtn.setOnClickListener(v->{
+                        recyclerView.setLayoutManager(llManager);
+                        showListBtn.setAlpha(1.0f);
+                        showGridBtn.setAlpha(0.2f);
+                    });
+                    showGridBtn.setOnClickListener(v->{
+                        recyclerView.setLayoutManager(glManager);
+                        showListBtn.setAlpha(0.2f);
+                        showGridBtn.setAlpha(1.0f);
                     });
 
                 });

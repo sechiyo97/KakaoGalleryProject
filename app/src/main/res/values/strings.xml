@@ -4,4 +4,6 @@
     <string name="sort_index">index</string>
     <string name="sort_atoz">atoz</string>
     <string name="sort_date">date</string>
+    <string name="show_list">list</string>
+    <string name="show_grid">grid</string>
 </resources>

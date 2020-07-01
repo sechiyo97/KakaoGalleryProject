@@ -15,14 +15,40 @@
         android:textSize="20sp"
         android:elevation="10dp"
         android:background="@color/colorPrimary">
-        <TextView
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:gravity = "center"
-            android:text="@string/sasha"
-            android:fontFamily="serif-monospace"
-            android:textSize="20sp"
-            android:textColor="@android:color/black" />
+            android:layout_height="70dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity = "center"
+                android:text="@string/sasha"
+                android:fontFamily="serif-monospace"
+                android:textSize="20sp"
+                android:textColor="@android:color/black" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_gravity = "center|end">
+                <ImageView
+                    android:id="@+id/show_list_btn"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:gravity = "center"
+                    android:src="@drawable/list_icon"
+                    android:alpha="1"
+                    android:layout_marginEnd="15dp"/>
+                <ImageView
+                    android:id="@+id/show_grid_btn"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:gravity = "center"
+                    android:alpha="0.2"
+                    android:src="@drawable/grid_icon"/>
+            </LinearLayout>
+        </FrameLayout>
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
