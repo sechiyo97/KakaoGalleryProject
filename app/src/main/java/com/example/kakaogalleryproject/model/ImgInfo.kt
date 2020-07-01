@@ -1,4 +1,4 @@
-package com.example.kakaogalleryproject.adapter
+package com.example.kakaogalleryproject.model
 
 class ImgInfo(val orgIdx: Int, href: String, date: String, name: String) {
     var href = ""

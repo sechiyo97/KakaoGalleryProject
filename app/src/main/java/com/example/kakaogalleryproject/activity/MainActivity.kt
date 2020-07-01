@@ -12,13 +12,15 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kakaogalleryproject.R
-import com.example.kakaogalleryproject.adapter.ImgAdapter
-import com.example.kakaogalleryproject.adapter.ImgInfo
+import com.example.kakaogalleryproject.model.ImgAdapter
+import com.example.kakaogalleryproject.model.ImgInfo
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import java.net.SocketTimeoutException
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -70,17 +72,19 @@ class MainActivity : AppCompatActivity() {
         mProgress!!.visibility = View.VISIBLE
         downloadTask = Observable.fromCallable {
             // onBackground
-            val doc = Jsoup.connect(baseURL).timeout(5000).get()
-            val imageSelector = ".jq-lazy"
-            val images = doc.select(imageSelector) // get images
-            for (i in images.indices) {
-                val image = images[i]
-                val href = image.attributes()["data-src"]
-                val date = getDateFromHref(href)
-                val name = image.attributes()["alt"]
-                val imgInfo = ImgInfo(i, href, date, name)
-                imageList.add(imgInfo)
-            }
+            try{
+                var doc = Jsoup.connect(baseURL).timeout(10000).get()
+                val imageSelector = ".jq-lazy"
+                val images = doc.select(imageSelector) // get images
+                for (i in images.indices) {
+                    val image = images[i]
+                    val href = image.attributes()["data-src"]
+                    val date = getDateFromHref(href)
+                    val name = image.attributes()["alt"]
+                    val imgInfo = ImgInfo(i, href, date, name)
+                    imageList.add(imgInfo)
+                }
+            } catch(e: Exception) {e.printStackTrace();}
             false
         }
                 .subscribeOn(Schedulers.io())

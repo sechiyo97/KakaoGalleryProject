@@ -1,4 +1,4 @@
-package com.example.kakaogalleryproject.adapter
+package com.example.kakaogalleryproject.model
 
 import android.content.Context
 import android.graphics.drawable.Drawable
