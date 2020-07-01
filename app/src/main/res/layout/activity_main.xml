@@ -7,16 +7,103 @@
     android:background="@color/colorPrimary"
     tools:context=".MainActivity">
 
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="100dp"
         android:gravity = "center"
-        android:text="@string/sasha"
-        android:fontFamily="serif-monospace"
         android:textSize="20sp"
         android:elevation="10dp"
-        android:background="@color/colorPrimary"
-        android:textColor="@android:color/black" />
+        android:background="@color/colorPrimary">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:gravity = "center"
+            android:text="@string/sasha"
+            android:fontFamily="serif-monospace"
+            android:textSize="20sp"
+            android:textColor="@android:color/black" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:gravity = "center">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity = "center">
+                <LinearLayout
+                    android:id="@+id/sort_index_btn"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:background="@color/colorAccent">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity = "center"
+                        android:text="@string/sort_index"
+                        android:fontFamily="serif-monospace"
+                        android:textSize="15sp"
+                        android:textColor="@android:color/black" />
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="2dp"
+                        android:src="@drawable/drop_down_arrow" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/sort_atoz_btn"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:background="@color/colorPrimary">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity = "center"
+                        android:text="@string/sort_atoz"
+                        android:fontFamily="serif-monospace"
+                        android:textSize="15sp"
+                        android:textColor="@android:color/black" />
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="2dp"
+                        android:src="@drawable/drop_down_arrow" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/sort_date_btn"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:background="@color/colorPrimary">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity = "center"
+                        android:text="@string/sort_date"
+                        android:fontFamily="serif-monospace"
+                        android:textSize="15sp"
+                        android:textColor="@android:color/black" />
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="2dp"
+                        android:src="@drawable/drop_down_arrow" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
 
     <FrameLayout
         android:layout_width="match_parent"

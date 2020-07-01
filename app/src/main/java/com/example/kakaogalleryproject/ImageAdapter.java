@@ -15,7 +15,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import java.util.ArrayList;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.CustomViewHolder> {
-    private ArrayList<String> imageList;
+    private ArrayList<ImgInfo> imageList;
     private Context mContext;
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
@@ -28,7 +28,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.CustomViewHo
         }
     }
 
-    public ImageAdapter(ArrayList<String> imageList) {
+    public ImageAdapter(ArrayList<ImgInfo> imageList) {
         this.imageList = imageList;
     }
 
@@ -44,7 +44,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.CustomViewHo
     @Override
     public void onBindViewHolder(final @NonNull ImageAdapter.CustomViewHolder viewholder, final int position) {
         Glide.with(mContext)
-                .load(imageList.get(position))
+                .load(imageList.get(position).getHref())
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .centerCrop()
                 .into(viewholder.imageView); // thumbnail(0.5f) 뺐음, centerCrop().도 뺐음

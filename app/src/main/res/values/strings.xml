@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">갤러리 과제</string>
     <string name="sasha">sasha</string>
+    <string name="sort_index">index</string>
+    <string name="sort_atoz">atoz</string>
+    <string name="sort_date">date</string>
 </resources>
