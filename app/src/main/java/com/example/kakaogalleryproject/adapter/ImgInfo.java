@@ -1,4 +1,4 @@
-package com.example.kakaogalleryproject;
+package com.example.kakaogalleryproject.adapter;
 
 public class ImgInfo{
     private int orgIdx;
@@ -12,6 +12,7 @@ public class ImgInfo{
         this.date = date;
         this.name = name;
     }
+
     public String getHref() {
         return this.href;
     }
