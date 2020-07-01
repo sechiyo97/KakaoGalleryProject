@@ -42,6 +42,8 @@ dependencies {
     //RxJava
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.15'
+    //Lifecycle
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 }
 repositories {
     mavenCentral()

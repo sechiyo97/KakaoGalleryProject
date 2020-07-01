@@ -1,4 +1,4 @@
-package com.example.kakaogalleryproject.activity
+package com.example.kakaogalleryproject.ui
 
 import android.app.Activity
 import android.os.Bundle

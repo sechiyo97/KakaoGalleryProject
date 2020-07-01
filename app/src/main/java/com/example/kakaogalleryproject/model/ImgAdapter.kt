@@ -16,10 +16,10 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.example.kakaogalleryproject.R
+import com.example.kakaogalleryproject.data.ImgInfo
 import java.util.ArrayList
 
-class ImgAdapter constructor(imageList: ArrayList<ImgInfo>?) : RecyclerView.Adapter<ImgAdapter.CustomViewHolder>() {
-    private val imageList: ArrayList<ImgInfo>? = imageList
+class ImgAdapter constructor(private val imageList: ArrayList<ImgInfo>?) : RecyclerView.Adapter<ImgAdapter.CustomViewHolder>() {
     private var mContext: Context? = null
 
     inner class CustomViewHolder constructor(view: View) : ViewHolder(view) {

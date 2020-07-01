@@ -1,4 +1,4 @@
-package com.example.kakaogalleryproject.activity
+package com.example.kakaogalleryproject.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,14 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kakaogalleryproject.R
 import com.example.kakaogalleryproject.model.ImgAdapter
-import com.example.kakaogalleryproject.model.ImgInfo
+import com.example.kakaogalleryproject.data.ImgInfo
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
-import java.net.SocketTimeoutException
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
