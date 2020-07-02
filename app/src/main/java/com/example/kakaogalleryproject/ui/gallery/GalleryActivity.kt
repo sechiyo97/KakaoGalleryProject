@@ -37,11 +37,11 @@ class GalleryActivity : AppCompatActivity(), LifecycleOwner {
         showSplash()
         setContentView(R.layout.activity_main)
 
-        initializeUI()
+        initUI()
         downloadTask()
     }
 
-    private fun initializeUI() {
+    private fun initUI() {
         recycler_view.setHasFixedSize(true)
 
         // viewmodel
@@ -59,49 +59,49 @@ class GalleryActivity : AppCompatActivity(), LifecycleOwner {
 
     private fun downloadTask() {
         // onPreExecute
-        progress_bar!!.visibility = View.VISIBLE
+        progress_bar.visibility = View.VISIBLE
         downloadTask = Observable.fromCallable {
-            viewModel.downloadTask() // onBackground
+            viewModel.downloadImgs() // onBackground
         }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-
                     // onPostExecute
-                    adapter.notifyDataSetChanged() // dataset changed
                     progress_bar.visibility = View.GONE
+                    initButtons() // init sort & layout buttons after loading images
                     downloadTask!!.dispose()
-
-                    // set onClickListener after showing all images
-                    sort_index_btn.setOnClickListener {
-                        sortImgList(1)
-                        sort_index_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
-                        sort_atoz_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
-                        sort_date_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
-                    }
-                    sort_atoz_btn.setOnClickListener {
-                        sortImgList(2)
-                        sort_index_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
-                        sort_atoz_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
-                        sort_date_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
-                    }
-                    sort_date_btn.setOnClickListener {
-                        sortImgList(3)
-                        sort_index_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
-                        sort_atoz_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
-                        sort_date_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
-                    }
-                    show_list_btn.setOnClickListener {
-                        recycler_view.layoutManager = llManager
-                        show_list_btn.alpha = 1.0f
-                        show_grid_btn.alpha = 0.2f
-                    }
-                    show_grid_btn.setOnClickListener {
-                        recycler_view.layoutManager = glManager
-                        show_list_btn.alpha = 0.2f
-                        show_grid_btn.alpha = 1.0f
-                    }
                 }
+    }
+
+    private fun initButtons(){// set onClickListener after showing all images
+        sort_index_btn.setOnClickListener {
+            sortImgList(1)
+            sort_index_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
+            sort_atoz_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
+            sort_date_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
+        }
+        sort_atoz_btn.setOnClickListener {
+            sortImgList(2)
+            sort_index_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
+            sort_atoz_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
+            sort_date_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
+        }
+        sort_date_btn.setOnClickListener {
+            sortImgList(3)
+            sort_index_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
+            sort_atoz_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
+            sort_date_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
+        }
+        show_list_btn.setOnClickListener {
+            recycler_view.layoutManager = llManager
+            show_list_btn.alpha = 1.0f
+            show_grid_btn.alpha = 0.2f
+        }
+        show_grid_btn.setOnClickListener {
+            recycler_view.layoutManager = glManager
+            show_list_btn.alpha = 0.2f
+            show_grid_btn.alpha = 1.0f
+        }
     }
 
 }

@@ -29,13 +29,13 @@ class ImgRepository {
         imgs.value = imgList
     }
 
-    fun downloadTask(){
+    fun downloadImgs(){
         try{
             val doc = Jsoup.connect(baseURL).timeout(10000).get()
             val imageSelector = ".jq-lazy"
-            val imgs = doc.select(imageSelector) // get images
-            for (i in imgs.indices) {
-                val imgElement = imgs[i]
+            val imgElements = doc.select(imageSelector) // get images
+            for (i in imgElements.indices) {
+                val imgElement = imgElements[i]
                 val href = imgElement.attributes()["data-src"]
                 val date = href.substring(54..61)
                 val name = imgElement.attributes()["alt"]
@@ -43,6 +43,6 @@ class ImgRepository {
                 addImg(img)
             }
         } catch(e: Exception) {e.printStackTrace();}
-
+        imgs.postValue(imgList) // background invokation
     }
 }
