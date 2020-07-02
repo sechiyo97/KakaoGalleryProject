@@ -8,8 +8,7 @@ import com.example.kakaogalleryproject.R
 class SplashActivity : Activity() {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
-        val splashTimeOut = 2000
+        val splashTimeOut = 1500
         Handler().postDelayed({
             finish()
             overridePendingTransition(0, R.anim.fade_out)

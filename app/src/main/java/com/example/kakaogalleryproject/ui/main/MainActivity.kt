@@ -1,4 +1,4 @@
-package com.example.kakaogalleryproject.ui.gallery
+package com.example.kakaogalleryproject.ui.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -19,40 +19,45 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 
-class GalleryActivity : AppCompatActivity(), LifecycleOwner {
-    private lateinit var viewModel: GalleryViewModel
-    private var downloadTask: Disposable? = null
-    private val adapter = GalleryAdapter()
+class MainActivity : AppCompatActivity() {
+    private lateinit var viewModel: ImgViewModel // must be nonnull
+
+    private val adapter = ImgAdapter()
     private var llManager: RecyclerView.LayoutManager? = null
     private var glManager: RecyclerView.LayoutManager? = null
 
+    private var downloadTask: Disposable? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        showSplash() // show splash screen for 2s while loading
+        setTheme(R.style.AppTheme)
+
+        initUI() // initialize UI
+    }
+
+    // show splash activity for 2s while loading
     private fun showSplash() {
         val intent = Intent(this, SplashActivity::class.java)
         startActivity(intent)
         overridePendingTransition(0, 0)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        showSplash()
-        setContentView(R.layout.activity_main)
-
-        initUI()
-        downloadTask()
-    }
-
     private fun initUI() {
-        recycler_view.setHasFixedSize(true)
-
         // viewmodel
-        viewModel = ViewModelProvider(this).get(GalleryViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(ImgViewModel::class.java)
         viewModel.getImgs().observe(this, Observer { imgs -> adapter.setImgs(imgs)})
 
         // set recyclerview
+        recycler_view.setHasFixedSize(true)
         glManager = GridLayoutManager(this, 3)
         llManager = LinearLayoutManager(this)
         recycler_view.layoutManager = llManager
         recycler_view.adapter = adapter
+
+        downloadTask()
     }
 
     private fun sortImgList(method: Int) = viewModel.sortBy(method)

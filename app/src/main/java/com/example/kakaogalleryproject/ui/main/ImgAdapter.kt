@@ -1,4 +1,4 @@
-package com.example.kakaogalleryproject.ui.gallery
+package com.example.kakaogalleryproject.ui.main
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -19,7 +19,7 @@ import com.example.kakaogalleryproject.R
 import com.example.kakaogalleryproject.data.Img
 import java.util.ArrayList
 
-class GalleryAdapter : RecyclerView.Adapter<GalleryAdapter.CustomViewHolder>() {
+class ImgAdapter : RecyclerView.Adapter<ImgAdapter.CustomViewHolder>() {
     private var imgList: List<Img> = ArrayList()
     private var context: Context? = null
 

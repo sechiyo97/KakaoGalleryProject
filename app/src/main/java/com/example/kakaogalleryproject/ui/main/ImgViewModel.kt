@@ -1,10 +1,10 @@
-package com.example.kakaogalleryproject.ui.gallery
+package com.example.kakaogalleryproject.ui.main
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import com.example.kakaogalleryproject.data.ImgRepository
 
-class GalleryViewModel(application: Application) : AndroidViewModel(application) {
+class ImgViewModel(application: Application) : AndroidViewModel(application) {
 
     private val imgRepository = ImgRepository()
 
