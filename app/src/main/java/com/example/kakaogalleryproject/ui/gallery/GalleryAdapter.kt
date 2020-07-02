@@ -1,4 +1,4 @@
-package com.example.kakaogalleryproject.model
+package com.example.kakaogalleryproject.ui.gallery
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -16,19 +16,18 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.example.kakaogalleryproject.R
-import com.example.kakaogalleryproject.data.ImgInfo
+import com.example.kakaogalleryproject.data.Img
 import java.util.ArrayList
 
-class ImgAdapter constructor(private val imageList: ArrayList<ImgInfo>?) : RecyclerView.Adapter<ImgAdapter.CustomViewHolder>() {
-    private var mContext: Context? = null
+class GalleryAdapter : RecyclerView.Adapter<GalleryAdapter.CustomViewHolder>() {
+    private var imgList: List<Img> = ArrayList()
+    private var context: Context? = null
 
     inner class CustomViewHolder constructor(view: View) : ViewHolder(view) {
         var imageView: ImageView = view.findViewById(R.id.recyclerview_image)
         var adapterProgressBar: ProgressBar = view.findViewById(R.id.adapter_progress_bar)
 
-        init {
-            mContext = view.context
-        }
+        init { context = view.context }
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): CustomViewHolder {
@@ -39,8 +38,8 @@ class ImgAdapter constructor(private val imageList: ArrayList<ImgInfo>?) : Recyc
 
     override fun onBindViewHolder(viewholder: CustomViewHolder, position: Int): Unit {
         viewholder.adapterProgressBar.visibility = View.VISIBLE
-        Glide.with(mContext!!)
-                .load(imageList?.get(position)?.href)
+        Glide.with(context!!)
+                .load(imgList[position].href)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .centerCrop()
                 .listener(object : RequestListener<Drawable?> {
@@ -48,7 +47,6 @@ class ImgAdapter constructor(private val imageList: ArrayList<ImgInfo>?) : Recyc
                         viewholder.adapterProgressBar.visibility = View.GONE
                         return false
                     }
-
                     override fun onResourceReady(resource: Drawable?, model: Any, target: Target<Drawable?>, dataSource: DataSource, isFirstResource: Boolean): Boolean {
                         viewholder.adapterProgressBar.visibility = View.GONE
                         return false
@@ -57,9 +55,11 @@ class ImgAdapter constructor(private val imageList: ArrayList<ImgInfo>?) : Recyc
                 .into(viewholder.imageView)
     }
 
-    override fun getItemCount(): Int {
-        return (imageList?.size ?: 0)
-    }
+    override fun getItemCount(): Int = imgList.size
 
+    fun setImgs(imgs: List<Img>) {
+        this.imgList = imgs
+        notifyDataSetChanged()
+    }
 
 }
