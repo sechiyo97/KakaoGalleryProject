@@ -1,20 +1,19 @@
 package com.example.kakaogalleryproject.ui.main
 
-import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.os.Bundle
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kakaogalleryproject.R
-import com.example.kakaogalleryproject.ui.splash.SplashActivity
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -72,6 +71,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initButtons(){// set onClickListener after showing all images
+        goup_btn.setOnClickListener { recycler_view.smoothScrollToPosition(0); } // scroll to top button
+
+        // sorting buttons
         sort_index_btn.setOnClickListener {
             sortImgList(1)
             sort_index_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
@@ -90,6 +92,8 @@ class MainActivity : AppCompatActivity() {
             sort_atoz_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
             sort_date_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
         }
+
+        // layout type selection buttons
         show_list_btn.setOnClickListener {
             curLayout = 0
             updateLayout()
@@ -104,22 +108,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateLayout() = when {
-        resources.configuration.orientation == ORIENTATION_LANDSCAPE -> {// landscape
-            glManager.spanCount = 6
-            title_top.layoutParams.height = (resources.displayMetrics.density * 40).toInt()
-            layout_selector.visibility = View.INVISIBLE
-            recycler_view.layoutManager = glManager
-        }
-        else -> { // portrait
-            glManager.spanCount = 3
-            title_top.layoutParams.height = (resources.displayMetrics.density * 70).toInt()
-            layout_selector.visibility = View.VISIBLE
-            when (curLayout) {
+    private fun updateLayout() {
+        if (resources.configuration.orientation == ORIENTATION_LANDSCAPE) { // landscape
+            glManager.spanCount = 6 // span 6 for wide screen
+            title_top.layoutParams.height = (resources.displayMetrics.density * 40).toInt() // shorter title
+            layout_selector.visibility = View.INVISIBLE // hide layout selector
+            recycler_view.layoutManager = glManager // grid layout
+        } else { // portrait
+            glManager.spanCount = 3 // span 3 for narrow screen
+            title_top.layoutParams.height = (resources.displayMetrics.density * 70).toInt() // longer title
+            layout_selector.visibility = View.VISIBLE // show layout selector
+            when (curLayout) { // layout selection
                 0 -> recycler_view.layoutManager = llManager
                 else -> recycler_view.layoutManager = glManager
             }
         }
+        recycler_view.smoothScrollToPosition(0); // to top
     }
 
     private fun sortImgList(method: Int) = viewModel.sortBy(method)

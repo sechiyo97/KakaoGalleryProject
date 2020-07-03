@@ -7,16 +7,17 @@ import android.os.Handler
 import com.example.kakaogalleryproject.R
 import com.example.kakaogalleryproject.ui.main.MainActivity
 
+const val SPLASH_TIME_OUT = 1000 // show splash for 1s
+
 class SplashActivity : Activity() {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val splashTimeOut = 1000 // show splash for 2s
         Handler().postDelayed({
-            showMain() // return to main actiivty
-        }, splashTimeOut.toLong())
+            showMain() // move on to main activity
+        }, SPLASH_TIME_OUT.toLong())
     }
     private fun showMain(){
-        var intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         overridePendingTransition(0, 0)
         finish()

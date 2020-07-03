@@ -133,13 +133,15 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:clipToPadding="false"
         app:layout_constraintTop_toBottomOf="@id/bar_top"
+        android:background="@drawable/button_background"
         app:layout_constraintBottom_toBottomOf="parent">
         <androidx.recyclerview.widget.RecyclerView
-            android:backgroundTint="#888888"
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
             android:paddingHorizontal="1dp"/>
         <ProgressBar
             style="?android:attr/progressBarStyle"
@@ -150,5 +152,16 @@
             android:layout_gravity="center"
             android:indeterminateDrawable="@drawable/circle_progress"
             android:indeterminateDuration="1000"/>
+        <ImageView
+            android:id="@+id/goup_btn"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/button_background"
+            android:padding="20dp"
+            android:rotation="180"
+            android:src="@drawable/drop_down_arrow"
+            android:outlineProvider="bounds"
+            android:layout_gravity="end|bottom"/>
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
