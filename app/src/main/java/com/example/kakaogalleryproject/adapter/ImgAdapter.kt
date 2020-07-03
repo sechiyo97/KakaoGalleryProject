@@ -1,4 +1,4 @@
-package com.example.kakaogalleryproject.ui.main
+package com.example.kakaogalleryproject.adapter
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -15,6 +15,7 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.example.kakaogalleryproject.ui.main.dialog.ImgDialog
 import com.example.kakaogalleryproject.R
 import com.example.kakaogalleryproject.data.Img
 import java.util.ArrayList
@@ -32,12 +33,14 @@ class ImgAdapter : RecyclerView.Adapter<ImgAdapter.CustomViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): CustomViewHolder {
         val view: View = LayoutInflater.from(viewGroup.context)
-                .inflate(R.layout.single_image, viewGroup, false) // inflate viewholder
+                .inflate(R.layout.single_img, viewGroup, false) // inflate viewholder
         return CustomViewHolder(view)
     }
 
     override fun onBindViewHolder(viewholder: CustomViewHolder, position: Int): Unit {
         viewholder.adapterProgressBar.visibility = View.VISIBLE // show progress bar while loading a image
+
+        // glide image in
         Glide.with(context!!)
                 .load(imgList[position].src) // load url
                 .transition(DrawableTransitionOptions.withCrossFade()) // fade in
@@ -53,6 +56,12 @@ class ImgAdapter : RecyclerView.Adapter<ImgAdapter.CustomViewHolder>() {
                     }
                 })
                 .into(viewholder.imageView)
+
+        // show image dialog when clicked
+        viewholder.imageView.setOnClickListener {
+            val imgDialog = ImgDialog(context!!)
+            imgDialog.start(imgList[position].src, imgList[position].name)
+        }
     }
 
     override fun getItemCount(): Int = imgList.size
@@ -61,5 +70,4 @@ class ImgAdapter : RecyclerView.Adapter<ImgAdapter.CustomViewHolder>() {
         this.imgList = imgs
         notifyDataSetChanged() // apply to UI
     }
-
 }

@@ -4,16 +4,15 @@ import android.content.res.Configuration
 import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.os.Bundle
 import android.view.View
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.kakaogalleryproject.R
+import com.example.kakaogalleryproject.constants.*
+import com.example.kakaogalleryproject.adapter.ImgAdapter
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -26,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 
     private val adapter = ImgAdapter() // initialize at once
     private var llManager = LinearLayoutManager(this) // default linearlayout
-    private var glManager = GridLayoutManager(this, 3) // default gridlayout
+    private var glManager = GridLayoutManager(this, PORTRAIT_GRID_SPAN) // default gridlayout
 
     private var downloadTask: Disposable? = null // could be executed more than twice
 
@@ -110,12 +109,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateLayout() {
         if (resources.configuration.orientation == ORIENTATION_LANDSCAPE) { // landscape
-            glManager.spanCount = 6 // span 6 for wide screen
+            glManager.spanCount = LANDSCAPE_GRID_SPAN // span 6 for wide screen
             title_top.layoutParams.height = (resources.displayMetrics.density * 40).toInt() // shorter title
             layout_selector.visibility = View.INVISIBLE // hide layout selector
             recycler_view.layoutManager = glManager // grid layout
         } else { // portrait
-            glManager.spanCount = 3 // span 3 for narrow screen
+            glManager.spanCount = PORTRAIT_GRID_SPAN // span 3 for narrow screen
             title_top.layoutParams.height = (resources.displayMetrics.density * 70).toInt() // longer title
             layout_selector.visibility = View.VISIBLE // show layout selector
             when (curLayout) { // layout selection

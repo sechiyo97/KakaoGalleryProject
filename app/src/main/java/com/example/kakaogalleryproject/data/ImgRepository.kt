@@ -2,11 +2,11 @@ package com.example.kakaogalleryproject.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.kakaogalleryproject.constants.BASE_URL
 import org.jsoup.Jsoup
 
 class ImgRepository {
 
-    private val baseURL = "https://www.gettyimagesgallery.com/collection/sasha"
     private val imgList = mutableListOf<Img>()
     private val imgs = MutableLiveData<List<Img>>()
 
@@ -31,14 +31,17 @@ class ImgRepository {
     fun downloadImgs(){
         imgList.clear() // download new data
         try{
-            val doc = Jsoup.connect(baseURL).timeout(10000).get() // get html
+            val doc = Jsoup.connect(BASE_URL).timeout(10000).get() // get html
             val imageSelector = ".jq-lazy" // selector
             val imgElements = doc.select(imageSelector) // get images
             for (i in imgElements.indices) { // find and insert data
                 val imgElement = imgElements[i]
                 val src = imgElement.attributes()["data-src"]
                 val date = src.substring(54..61)
-                val name = imgElement.attributes()["alt"]
+
+                val alt = imgElement.attributes()["alt"]
+                val name = alt.substring(0..alt.length-33)
+
                 val img = Img(i, src, date, name)
                 addImg(img)
             }

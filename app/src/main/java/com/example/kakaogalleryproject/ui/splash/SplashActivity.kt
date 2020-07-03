@@ -5,9 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import com.example.kakaogalleryproject.R
+import com.example.kakaogalleryproject.constants.SPLASH_TIME_OUT
 import com.example.kakaogalleryproject.ui.main.MainActivity
-
-const val SPLASH_TIME_OUT = 1000 // show splash for 1s
 
 class SplashActivity : Activity() {
     public override fun onCreate(savedInstanceState: Bundle?) {
