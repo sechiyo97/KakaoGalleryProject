@@ -39,7 +39,7 @@ class ImgAdapter : RecyclerView.Adapter<ImgAdapter.CustomViewHolder>() {
     override fun onBindViewHolder(viewholder: CustomViewHolder, position: Int): Unit {
         viewholder.adapterProgressBar.visibility = View.VISIBLE // show progress bar while loading a image
         Glide.with(context!!)
-                .load(imgList[position].href) // load url
+                .load(imgList[position].src) // load url
                 .transition(DrawableTransitionOptions.withCrossFade()) // fade in
                 .centerCrop() // fit center
                 .listener(object : RequestListener<Drawable?> { // after load, remove progress bar

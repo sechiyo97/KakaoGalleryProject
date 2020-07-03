@@ -36,10 +36,10 @@ class ImgRepository {
             val imgElements = doc.select(imageSelector) // get images
             for (i in imgElements.indices) { // find and insert data
                 val imgElement = imgElements[i]
-                val href = imgElement.attributes()["data-src"]
-                val date = href.substring(54..61)
+                val src = imgElement.attributes()["data-src"]
+                val date = src.substring(54..61)
                 val name = imgElement.attributes()["alt"]
-                val img = Img(i, href, date, name)
+                val img = Img(i, src, date, name)
                 addImg(img)
             }
         } catch(e: Exception) {e.printStackTrace();}
