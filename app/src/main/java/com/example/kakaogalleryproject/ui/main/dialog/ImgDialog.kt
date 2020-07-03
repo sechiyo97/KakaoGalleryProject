@@ -2,9 +2,12 @@ package com.example.kakaogalleryproject.ui.main.dialog
 
 import android.app.Dialog
 import android.content.Context
+import android.content.res.Configuration.ORIENTATION_LANDSCAPE
+import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.view.Window
+import android.view.WindowManager
 import android.widget.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -29,7 +32,7 @@ class ImgDialog(private val context: Context) {
         // widgets
         val theDialog = dlg.findViewById<View>(R.id.img_dialog) // full dialog
         val imgInfo = dlg.findViewById<View>(R.id.img_info) as TextView
-        val imgLarge = dlg.findViewById<View>(R.id.img_large) as ImageView
+        val imgView = dlg.findViewById<View>(R.id.img_view) as ImageView
         val dialogProgressBar = dlg.findViewById<View>(R.id.dialog_progress_bar) as ProgressBar
 
         // edit inside dialog
@@ -47,7 +50,7 @@ class ImgDialog(private val context: Context) {
                         return false
                     }
                 })
-                .into(imgLarge)
+                .into(imgView)
 
         theDialog.setOnClickListener(){ dlg.dismiss() }
     }
