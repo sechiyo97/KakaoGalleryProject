@@ -20,51 +20,39 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var viewModel: ImgViewModel // must be nonnull
+    private lateinit var viewModel: ImgViewModel // nonnull
 
-    private val adapter = ImgAdapter()
-    private var llManager: RecyclerView.LayoutManager? = null
-    private var glManager: RecyclerView.LayoutManager? = null
+    private val adapter = ImgAdapter() // initialize at once
+    private val llManager = LinearLayoutManager(this)
+    private val glManager = GridLayoutManager(this, 3)
 
-    private var downloadTask: Disposable? = null
+    private var downloadTask: Disposable? = null // could be executed more than twice
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        showSplash() // show splash screen for 2s while loading
-        setTheme(R.style.AppTheme)
-
+        setTheme(R.style.AppTheme) // remove SplashTheme
         initUI() // initialize UI
     }
 
-    // show splash activity for 2s while loading
-    private fun showSplash() {
-        val intent = Intent(this, SplashActivity::class.java)
-        startActivity(intent)
-        overridePendingTransition(0, 0)
-    }
-
     private fun initUI() {
-        // viewmodel
-        viewModel = ViewModelProvider(this).get(ImgViewModel::class.java)
-        viewModel.getImgs().observe(this, Observer { imgs -> adapter.setImgs(imgs)})
-
         // set recyclerview
         recycler_view.setHasFixedSize(true)
-        glManager = GridLayoutManager(this, 3)
-        llManager = LinearLayoutManager(this)
         recycler_view.layoutManager = llManager
         recycler_view.adapter = adapter
 
-        downloadTask()
+        // viewmodel
+        viewModel = ViewModelProvider(this).get(ImgViewModel::class.java) // get a viewmodel
+        viewModel.getImgs().observe(this, Observer { imgs -> adapter.setImgs(imgs)}) // change adapter imags when changed
+
+        // download images
+        downloadImgs()
     }
 
-    private fun sortImgList(method: Int) = viewModel.sortBy(method)
-
-    private fun downloadTask() {
+    private fun downloadImgs() {
         // onPreExecute
-        progress_bar.visibility = View.VISIBLE
+        progress_bar.visibility = View.VISIBLE // progress bar appear
         downloadTask = Observable.fromCallable {
             viewModel.downloadImgs() // onBackground
         }
@@ -72,7 +60,7 @@ class MainActivity : AppCompatActivity() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     // onPostExecute
-                    progress_bar.visibility = View.GONE
+                    progress_bar.visibility = View.GONE // progress bar disappear
                     initButtons() // init sort & layout buttons after loading images
                     downloadTask!!.dispose()
                 }
@@ -109,4 +97,5 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun sortImgList(method: Int) = viewModel.sortBy(method)
 }

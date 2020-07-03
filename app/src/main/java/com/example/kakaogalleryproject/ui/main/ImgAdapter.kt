@@ -32,17 +32,17 @@ class ImgAdapter : RecyclerView.Adapter<ImgAdapter.CustomViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): CustomViewHolder {
         val view: View = LayoutInflater.from(viewGroup.context)
-                .inflate(R.layout.single_image, viewGroup, false)
+                .inflate(R.layout.single_image, viewGroup, false) // inflate viewholder
         return CustomViewHolder(view)
     }
 
     override fun onBindViewHolder(viewholder: CustomViewHolder, position: Int): Unit {
-        viewholder.adapterProgressBar.visibility = View.VISIBLE
+        viewholder.adapterProgressBar.visibility = View.VISIBLE // show progress bar while loading a image
         Glide.with(context!!)
-                .load(imgList[position].href)
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .centerCrop()
-                .listener(object : RequestListener<Drawable?> {
+                .load(imgList[position].href) // load url
+                .transition(DrawableTransitionOptions.withCrossFade()) // fade in
+                .centerCrop() // fit center
+                .listener(object : RequestListener<Drawable?> { // after load, remove progress bar
                     override fun onLoadFailed(e: GlideException?, model: Any, target: Target<Drawable?>, isFirstResource: Boolean): Boolean {
                         viewholder.adapterProgressBar.visibility = View.GONE
                         return false
@@ -59,7 +59,7 @@ class ImgAdapter : RecyclerView.Adapter<ImgAdapter.CustomViewHolder>() {
 
     fun setImgs(imgs: List<Img>) {
         this.imgList = imgs
-        notifyDataSetChanged()
+        notifyDataSetChanged() // apply to UI
     }
 
 }
