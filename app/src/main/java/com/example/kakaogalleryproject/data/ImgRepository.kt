@@ -29,6 +29,7 @@ class ImgRepository {
     }
 
     fun downloadImgs(){
+        imgList.clear() // download new data
         try{
             val doc = Jsoup.connect(baseURL).timeout(10000).get() // get html
             val imageSelector = ".jq-lazy" // selector

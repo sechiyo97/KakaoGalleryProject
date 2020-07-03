@@ -1,6 +1,8 @@
 package com.example.kakaogalleryproject.ui.main
 
 import android.content.Intent
+import android.content.res.Configuration
+import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -21,25 +23,28 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: ImgViewModel // nonnull
+    private var curLayout = 0 // linear for 0
 
     private val adapter = ImgAdapter() // initialize at once
-    private val llManager = LinearLayoutManager(this)
-    private val glManager = GridLayoutManager(this, 3)
+    private var llManager = LinearLayoutManager(this) // default linearlayout
+    private var glManager = GridLayoutManager(this, 3) // default gridlayout
 
     private var downloadTask: Disposable? = null // could be executed more than twice
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        setTheme(R.style.AppTheme) // remove SplashTheme
         initUI() // initialize UI
+    }
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        updateLayout()
     }
 
     private fun initUI() {
         // set recyclerview
         recycler_view.setHasFixedSize(true)
-        recycler_view.layoutManager = llManager
+        updateLayout()
         recycler_view.adapter = adapter
 
         // viewmodel
@@ -86,14 +91,34 @@ class MainActivity : AppCompatActivity() {
             sort_date_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
         }
         show_list_btn.setOnClickListener {
-            recycler_view.layoutManager = llManager
+            curLayout = 0
+            updateLayout()
             show_list_btn.alpha = 1.0f
             show_grid_btn.alpha = 0.2f
         }
         show_grid_btn.setOnClickListener {
-            recycler_view.layoutManager = glManager
+            curLayout = 1
+            updateLayout()
             show_list_btn.alpha = 0.2f
             show_grid_btn.alpha = 1.0f
+        }
+    }
+
+    private fun updateLayout() = when {
+        resources.configuration.orientation == ORIENTATION_LANDSCAPE -> {// landscape
+            glManager.spanCount = 6
+            title_top.layoutParams.height = (resources.displayMetrics.density * 40).toInt()
+            layout_selector.visibility = View.INVISIBLE
+            recycler_view.layoutManager = glManager
+        }
+        else -> { // portrait
+            glManager.spanCount = 3
+            title_top.layoutParams.height = (resources.displayMetrics.density * 70).toInt()
+            layout_selector.visibility = View.VISIBLE
+            when (curLayout) {
+                0 -> recycler_view.layoutManager = llManager
+                else -> recycler_view.layoutManager = glManager
+            }
         }
     }
 
