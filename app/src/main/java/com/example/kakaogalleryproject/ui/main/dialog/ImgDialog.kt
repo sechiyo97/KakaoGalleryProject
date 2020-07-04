@@ -2,12 +2,9 @@ package com.example.kakaogalleryproject.ui.main.dialog
 
 import android.app.Dialog
 import android.content.Context
-import android.content.res.Configuration.ORIENTATION_LANDSCAPE
-import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.view.Window
-import android.view.WindowManager
 import android.widget.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
