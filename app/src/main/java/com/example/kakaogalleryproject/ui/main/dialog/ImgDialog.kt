@@ -3,6 +3,7 @@ package com.example.kakaogalleryproject.ui.main.dialog
 import android.app.Dialog
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.os.Bundle
 import android.view.View
 import android.view.Window
 import android.widget.*
@@ -15,22 +16,28 @@ import com.bumptech.glide.request.target.Target
 import com.example.kakaogalleryproject.R
 
 // custom dialog for image showing
-class ImgDialog(private val context: Context) {
+class ImgDialog(context: Context) : Dialog(context){
 
-    fun start(src:String, title:String) {
-        val dlg = Dialog(context)
+    private lateinit var title : String
+    private lateinit var src : String
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         // settings
-        dlg.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dlg.setContentView(R.layout.img_dialog)
-
-        dlg.show() // show dialog
-
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        setContentView(R.layout.img_dialog)
+    }
+    fun setInfo(title: String, src: String){
+        this.title = title
+        this.src = src
+    }
+    override fun show() {
+        super.show()
         // widgets
-        val theDialog = dlg.findViewById<View>(R.id.img_dialog) // full dialog
-        val imgInfo = dlg.findViewById<View>(R.id.img_info) as TextView
-        val imgView = dlg.findViewById<View>(R.id.img_view) as ImageView
-        val dialogProgressBar = dlg.findViewById<View>(R.id.dialog_progress_bar) as ProgressBar
+        val theDialog = findViewById<View>(R.id.img_dialog) // full dialog
+        val imgInfo = findViewById<View>(R.id.img_info) as TextView
+        val imgView = findViewById<View>(R.id.img_view) as ImageView
+        val dialogProgressBar = findViewById<View>(R.id.dialog_progress_bar) as ProgressBar
 
         // edit inside dialog
         imgInfo.text = title
@@ -49,7 +56,7 @@ class ImgDialog(private val context: Context) {
                 })
                 .into(imgView)
 
-        theDialog.setOnClickListener(){ dlg.dismiss() }
+        theDialog.setOnClickListener(){ dismiss() }
     }
 
 }

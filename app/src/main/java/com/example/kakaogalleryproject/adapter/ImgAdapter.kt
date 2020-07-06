@@ -60,7 +60,8 @@ class ImgAdapter : RecyclerView.Adapter<ImgAdapter.CustomViewHolder>() {
         // show image dialog when clicked
         viewholder.imageView.setOnClickListener {
             val imgDialog = ImgDialog(context!!)
-            imgDialog.start(imgList[position].src, imgList[position].name)
+            imgDialog.setInfo(imgList[position].name, imgList[position].src)
+            imgDialog.show()
         }
     }
 
