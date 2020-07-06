@@ -16,28 +16,22 @@ import com.bumptech.glide.request.target.Target
 import com.example.kakaogalleryproject.R
 
 // custom dialog for image showing
-class ImgDialog(context: Context) : Dialog(context){
+class ImgDialog(private val context: Context) {
 
-    private lateinit var title : String
-    private lateinit var src : String
+    fun start(src:String, title:String) {
+        val dlg = Dialog(context)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         // settings
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
-        setContentView(R.layout.img_dialog)
-    }
-    fun setInfo(title: String, src: String){
-        this.title = title
-        this.src = src
-    }
-    override fun show() {
-        super.show()
+        dlg.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dlg.setContentView(R.layout.img_dialog)
+
+        dlg.show() // show dialog
+
         // widgets
-        val theDialog = findViewById<View>(R.id.img_dialog) // full dialog
-        val imgInfo = findViewById<View>(R.id.img_info) as TextView
-        val imgView = findViewById<View>(R.id.img_view) as ImageView
-        val dialogProgressBar = findViewById<View>(R.id.dialog_progress_bar) as ProgressBar
+        val theDialog = dlg.findViewById<View>(R.id.img_dialog) // full dialog
+        val imgInfo = dlg.findViewById<View>(R.id.img_info) as TextView
+        val imgView = dlg.findViewById<View>(R.id.img_view) as ImageView
+        val dialogProgressBar = dlg.findViewById<View>(R.id.dialog_progress_bar) as ProgressBar
 
         // edit inside dialog
         imgInfo.text = title
@@ -56,7 +50,7 @@ class ImgDialog(context: Context) : Dialog(context){
                 })
                 .into(imgView)
 
-        theDialog.setOnClickListener(){ dismiss() }
+        theDialog.setOnClickListener(){ dlg.dismiss() }
     }
 
 }
