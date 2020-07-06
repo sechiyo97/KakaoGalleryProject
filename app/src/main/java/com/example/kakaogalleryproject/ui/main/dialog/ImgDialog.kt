@@ -17,7 +17,7 @@ import com.example.kakaogalleryproject.R
 // custom dialog for image showing
 class ImgDialog(private val context: Context) {
 
-    fun start(src:String, title:String) {
+    fun start(title:String, src:String) {
         val dlg = Dialog(context)
 
         // settings
