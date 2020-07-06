@@ -27,7 +27,7 @@ class ImgRepository {
         }
         imgs.value = imgList // change livedata
     }
-
+    
     fun downloadImgs(){
         imgList.clear() // download new data
         try{

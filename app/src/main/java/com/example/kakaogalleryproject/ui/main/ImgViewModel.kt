@@ -8,7 +8,7 @@ class ImgViewModel(application: Application) : AndroidViewModel(application) {
 
     private val imgRepository = ImgRepository()
 
-    fun getImgs() = imgRepository.getImgs();
+    fun getImgs() = imgRepository.getImgs()
 
     fun sortBy(method: Int) = imgRepository.sortBy(method)
     fun downloadImgs() = imgRepository.downloadImgs()
