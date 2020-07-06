@@ -18,48 +18,45 @@ import com.bumptech.glide.request.target.Target
 import com.example.kakaogalleryproject.ui.main.dialog.ImgDialog
 import com.example.kakaogalleryproject.R
 import com.example.kakaogalleryproject.data.Img
+import kotlinx.android.synthetic.main.single_img.view.*
 import java.util.ArrayList
 
-class ImgAdapter : RecyclerView.Adapter<ImgAdapter.CustomViewHolder>() {
+class ImgAdapter : RecyclerView.Adapter<ImgAdapter.ImgViewHolder>() {
     private var imgList: List<Img> = ArrayList()
-    private var context: Context? = null
+    private lateinit var context: Context
 
-    inner class CustomViewHolder constructor(view: View) : ViewHolder(view) {
-        var imageView: ImageView = view.findViewById(R.id.recyclerview_image)
-        var adapterProgressBar: ProgressBar = view.findViewById(R.id.adapter_progress_bar)
+    inner class ImgViewHolder (val view: View) : ViewHolder(view)
 
-        init { context = view.context }
-    }
-
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): CustomViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ImgViewHolder {
         val view: View = LayoutInflater.from(viewGroup.context)
                 .inflate(R.layout.single_img, viewGroup, false) // inflate viewholder
-        return CustomViewHolder(view)
+        context = viewGroup.context
+        return ImgViewHolder(view)
     }
 
-    override fun onBindViewHolder(viewholder: CustomViewHolder, position: Int): Unit {
-        viewholder.adapterProgressBar.visibility = View.VISIBLE // show progress bar while loading a image
+    override fun onBindViewHolder(viewholder: ImgViewHolder, position: Int): Unit {
+        viewholder.view.adapter_progress_bar.visibility = View.VISIBLE // show progress bar while loading a image
 
         // glide image in
-        Glide.with(context!!)
+        Glide.with(context)
                 .load(imgList[position].src) // load url
                 .transition(DrawableTransitionOptions.withCrossFade()) // fade in
                 .centerCrop() // fit center
                 .listener(object : RequestListener<Drawable?> { // after load, remove progress bar
                     override fun onLoadFailed(e: GlideException?, model: Any, target: Target<Drawable?>, isFirstResource: Boolean): Boolean {
-                        viewholder.adapterProgressBar.visibility = View.GONE
+                        viewholder.view.adapter_progress_bar.visibility = View.GONE
                         return false
                     }
                     override fun onResourceReady(resource: Drawable?, model: Any, target: Target<Drawable?>, dataSource: DataSource, isFirstResource: Boolean): Boolean {
-                        viewholder.adapterProgressBar.visibility = View.GONE
+                        viewholder.view.adapter_progress_bar.visibility = View.GONE
                         return false
                     }
                 })
-                .into(viewholder.imageView)
+                .into(viewholder.view.recyclerview_image)
 
         // show image dialog when clicked
-        viewholder.imageView.setOnClickListener {
-            val imgDialog = ImgDialog(context!!)
+        viewholder.view.recyclerview_image.setOnClickListener {
+            val imgDialog = ImgDialog(context)
             imgDialog.start(imgList[position].name, imgList[position].src)
         }
     }
