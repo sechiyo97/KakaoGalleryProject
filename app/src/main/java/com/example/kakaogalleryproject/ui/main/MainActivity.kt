@@ -20,8 +20,9 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
     private lateinit var viewModel: ImgViewModel // nonnull
-    private var curLayout = 0 // linear for 0
+    private var curLayout = ImgViewModel.LAYOUT.LINEAR_LAYOUT // linear for 0
 
     private val adapter = ImgAdapter() // initialize at once
     private var llManager = LinearLayoutManager(this) // default linearlayout
@@ -75,19 +76,19 @@ class MainActivity : AppCompatActivity() {
 
         // sorting buttons
         sort_index_btn.setOnClickListener {
-            sortImgList(1)
+            sortImgList(ImgViewModel.SORTER.SORT_BY_INDEX)
             sort_index_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
             sort_atoz_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
             sort_date_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
         }
         sort_atoz_btn.setOnClickListener {
-            sortImgList(2)
+            sortImgList(ImgViewModel.SORTER.SORT_BY_NAME)
             sort_index_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
             sort_atoz_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
             sort_date_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
         }
         sort_date_btn.setOnClickListener {
-            sortImgList(3)
+            sortImgList(ImgViewModel.SORTER.SORT_BY_DATE)
             sort_index_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
             sort_atoz_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
             sort_date_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
@@ -95,13 +96,13 @@ class MainActivity : AppCompatActivity() {
 
         // layout type selection buttons
         show_list_btn.setOnClickListener {
-            curLayout = 0
+            curLayout = ImgViewModel.LAYOUT.LINEAR_LAYOUT
             updateLayout()
             show_list_btn.alpha = 1.0f
             show_grid_btn.alpha = 0.2f
         }
         show_grid_btn.setOnClickListener {
-            curLayout = 1
+            curLayout = ImgViewModel.LAYOUT.GRID_LAYOUT
             updateLayout()
             show_list_btn.alpha = 0.2f
             show_grid_btn.alpha = 1.0f
@@ -119,12 +120,11 @@ class MainActivity : AppCompatActivity() {
             title_top.layoutParams.height = (resources.displayMetrics.density * 70).toInt() // longer title
             layout_selector.visibility = View.VISIBLE // show layout selector
             when (curLayout) { // layout selection
-                0 -> recycler_view.layoutManager = llManager
+                ImgViewModel.LAYOUT.LINEAR_LAYOUT -> recycler_view.layoutManager = llManager
                 else -> recycler_view.layoutManager = glManager
             }
         }
         recycler_view.smoothScrollToPosition(0); // to top
     }
-
-    private fun sortImgList(method: Int) = viewModel.sortBy(method)
+    private fun sortImgList(method: ImgViewModel.SORTER) = viewModel.sortBy(method)
 }

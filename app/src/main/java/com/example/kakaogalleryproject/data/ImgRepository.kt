@@ -7,23 +7,36 @@ import org.jsoup.Jsoup
 
 class ImgRepository {
 
+    inner class IndexComparator : Comparator<Img> {
+        override fun compare(a: Img, b: Img): Int =  a.orgIdx - b.orgIdx
+    }
+
+    inner class NameComparator : Comparator<Img> {
+        override fun compare(a: Img, b: Img): Int =  a.name.compareTo(b.name)
+    }
+
+    inner class DateComparator : Comparator<Img> {
+        override fun compare(a: Img, b: Img): Int {
+            val dateComp = b.date.compareTo(a.date)
+            val nameComp = a.name.compareTo(b.name)
+            return if (dateComp != 0) dateComp else nameComp
+        }
+    }
+
     private val imgList = mutableListOf<Img>()
     private val imgs = MutableLiveData<List<Img>>()
 
     init { imgs.value = imgList } // change livedata
 
-    fun addImg(img: Img) = imgList.add(img)
+    private fun addImg(img: Img) = imgList.add(img)
+
     fun getImgs() = imgs as LiveData<List<Img>> // return livedata
 
     fun sortBy(method: Int) {
         when (method) {
-            1 -> imgList.sortWith(Comparator { a: Img, b: Img -> a.orgIdx - b.orgIdx }) // sort by index
-            2 -> imgList.sortWith(Comparator { a: Img, b: Img -> a.name.compareTo(b.name) }) // sort by name
-            3 -> imgList.sortWith(Comparator { a: Img, b: Img -> // sort by date and then name
-                val dateComp = b.date.compareTo(a.date)
-                val nameComp = a.name.compareTo(b.name)
-                if (dateComp != 0) dateComp else nameComp
-            })
+            0 -> imgList.sortWith(IndexComparator()) // sort by index
+            1 -> imgList.sortWith(NameComparator()) // sort by name
+            2 -> imgList.sortWith(DateComparator())
         }
         imgs.value = imgList // change livedata
     }
