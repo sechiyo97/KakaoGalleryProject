@@ -12,8 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.main.MainActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"/>
-        <activity android:name=".ui.splash.SplashActivity"
             android:theme="@style/SplashTheme"
             android:configChanges="orientation|screenSize|keyboardHidden">
             <intent-filter>
@@ -21,6 +19,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
+        </activity>
+        <activity android:name=".ui.splash.SplashActivity"
+            android:theme="@style/SplashTheme"
+            android:configChanges="orientation|screenSize|keyboardHidden">
         </activity>
     </application>
 

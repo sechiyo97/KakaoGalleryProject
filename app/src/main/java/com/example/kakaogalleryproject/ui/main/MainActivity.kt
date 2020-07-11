@@ -1,5 +1,6 @@
 package com.example.kakaogalleryproject.ui.main
 
+import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.os.Bundle
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kakaogalleryproject.R
 import com.example.kakaogalleryproject.constants.*
 import com.example.kakaogalleryproject.adapter.ImgAdapter
+import com.example.kakaogalleryproject.ui.splash.SplashActivity
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -32,8 +34,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        showSplash()
         setContentView(R.layout.activity_main)
         initUI() // initialize UI
+    }
+
+    private fun showSplash(){
+        val intent = Intent(this, SplashActivity::class.java)
+        startActivity(intent)
+        overridePendingTransition(0, 0)
+        setTheme(R.style.AppTheme)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
