@@ -15,6 +15,7 @@ import com.example.kakaogalleryproject.R
 import com.example.kakaogalleryproject.constants.*
 import com.example.kakaogalleryproject.adapter.ImgAdapter
 import com.example.kakaogalleryproject.ui.splash.SplashActivity
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -52,7 +53,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initUI() {
-        // set index order
+        // set index order button
         sort_index_btn.isSelected = true
 
         // set recyclerview
@@ -64,6 +65,9 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(ImgViewModel::class.java) // get a viewmodel
         viewModel.getImgs().observe(this, Observer { imgs -> adapter.setImgs(imgs)}) // change adapter imags when changed
 
+        // init sort & layout buttons
+        initButtons()
+
         // download images
         downloadImgs()
     }
@@ -71,7 +75,7 @@ class MainActivity : AppCompatActivity() {
     private fun downloadImgs() {
         // onPreExecute
         progress_bar.visibility = View.VISIBLE // progress bar appear
-        downloadTask = Observable.fromCallable {
+        downloadTask = Completable.fromCallable {
             viewModel.downloadImgs() // onBackground
         }
                 .subscribeOn(Schedulers.io())
@@ -79,7 +83,6 @@ class MainActivity : AppCompatActivity() {
                 .subscribe {
                     // onPostExecute
                     progress_bar.visibility = View.GONE // progress bar disappear
-                    initButtons() // init sort & layout buttons after loading images
                     downloadTask!!.dispose()
                 }
     }
