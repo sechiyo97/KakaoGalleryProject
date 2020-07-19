@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--color selector-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- when clicked -->
+    <item android:state_selected="true" android:drawable="@color/colorAccent"/>
+    <!-- when not clicked -->
+    <item android:state_selected="false" android:drawable="@color/colorPrimary"/>
+</selector>

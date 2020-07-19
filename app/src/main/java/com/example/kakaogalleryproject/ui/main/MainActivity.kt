@@ -52,6 +52,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initUI() {
+        // set index order
+        sort_index_btn.isSelected = true
+
         // set recyclerview
         recycler_view.setHasFixedSize(true)
         updateLayout()
@@ -87,21 +90,21 @@ class MainActivity : AppCompatActivity() {
         // sorting buttons
         sort_index_btn.setOnClickListener {
             sortImgList(ImgViewModel.SORTER.SORT_BY_INDEX)
-            sort_index_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
-            sort_atoz_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
-            sort_date_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
+            sort_index_btn.isSelected = true
+            sort_atoz_btn.isSelected = false
+            sort_date_btn.isSelected = false
         }
         sort_atoz_btn.setOnClickListener {
             sortImgList(ImgViewModel.SORTER.SORT_BY_NAME)
-            sort_index_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
-            sort_atoz_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
-            sort_date_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
+            sort_index_btn.isSelected = false
+            sort_atoz_btn.isSelected = true
+            sort_date_btn.isSelected = false
         }
         sort_date_btn.setOnClickListener {
             sortImgList(ImgViewModel.SORTER.SORT_BY_DATE)
-            sort_index_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
-            sort_atoz_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
-            sort_date_btn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
+            sort_index_btn.isSelected = false
+            sort_atoz_btn.isSelected = false
+            sort_date_btn.isSelected = true
         }
 
         // layout type selection buttons
